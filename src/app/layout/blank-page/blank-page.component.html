@@ -1,22 +1,63 @@
-<p-table #dt [columns]="cols" [value]="cars" selectionMode="multiple" [(selection)]="selectedCars">
-        <ng-template pTemplate="caption">
-            <div class="ui-helper-clearfix">
-                <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="All Data" (click)="dt.exportCSV()" style="float:left"></button>
-                <button type="button" pButton icon="fa fa-file" iconPos="left" label="Selection Only" (click)="dt.exportCSV({selectionOnly:true})" style="float:right"></button>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-table #dt [columns]="cols" [value]="attandace_convert" [(selection)]="selectedCars">
+    <ng-template pTemplate="caption">
+
+        <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Down Load(cvs)" (click)="dt.exportCSV()" style="float:left;margin-right: 10px"></button>
+            <button type="button" pButton icon="fa fa-fw fa-edit" iconPos="left" label="휴가 신청 하기" (click)="openDialog()" style="float:left"></button>
+
+            <!-- <button type="button" pButton icon="fa fa-file" iconPos="left" label="Selection Only" (click)="dt.exportCSV({selectionOnly:true})" style="float:right"></button> -->
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog header="휴가 신청 양식" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="example-container">
+            <mat-form-field>
+                <input matInput placeholder="Input">
+            </mat-form-field>
+            
+            <mat-form-field>
+                <textarea matInput placeholder="연차, 대체휴가, 병가 등 - 연차인 경우 안적으셔도 되며, 대체인 경우 반드시 사유를 적으세요"></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-select placeholder="휴가 종류">
+                    <mat-option *ngFor="let attandanceType of attandanceTypes" [value]="attandanceType.code">
+                    {{attandanceType.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field> -->
+            <!-- <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> -->
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+                <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [pSelectableRow]="rowData">
-                <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+        </p-footer>
+    </p-dialog>

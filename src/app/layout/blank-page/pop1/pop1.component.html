@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>휴가 신청서</span>
+    <span class="example-spacer"></span>
+    <mat-icon class="example-icon">create</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="divpadding">
+  <mat-form-field>
+    <mat-select placeholder="휴가 종류" required>
+        <mat-option *ngFor="let attandanceType of attandanceTypes" [value]="attandanceType.code">
+        {{attandanceType.name}}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Start date" required disabled style="color:currentColor">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker2" placeholder="End date" required disabled style="color:currentColor">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker2 disabled="false"></mat-datepicker>
+  </mat-form-field>
+  
+  <mat-form-field class="fullwidth">
+      <mat-label>Purpose</mat-label>
+      <textarea matInput placeholder="예) 연차, 대체휴가, 병가 등 - 연차인 경우 안적으셔도 되며, 대체인 경우 반드시 사유를 적으세요"></textarea>
+    </mat-form-field>
+</div>
+<mat-dialog-actions  class="divpadding" align="end">
+  <button mat-button color="primary" (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data.animal" cdkFocusInitial>Submit</button>
+</mat-dialog-actions>
